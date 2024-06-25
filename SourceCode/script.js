@@ -67,34 +67,25 @@ document.addEventListener('DOMContentLoaded', function() {
                 newsDiv.innerHTML = ''; // Clear previous content if any
                 data.articles.forEach(article => {
                     newsDiv.innerHTML += `
-                        <div>
-                            <h3>${article.title}</h3>
-                            <p>${article.description}</p>
+                        <div class="news-item">
                             <img src="${article.image}" alt="Article Image">
-                            <p><a href="${article.url}" target="_blank">Read more</a></p>
+                            <div class="news-content">
+                                <h3>${article.title}</h3>
+                                <p>${article.description}</p>
+                                <a href="${article.url}" class="read-more" target="_blank">Read more</a>
+                            </div>
                         </div>
                     `;
                 });
             })
             .catch(error => console.error('Error fetching news data:', error));
     }
-    // Function to display news articles
-    function displayNews(articles) {
-        const newsDiv = document.getElementById('news-data');
-        newsDiv.innerHTML = ''; // Clear previous content
-        articles.forEach(article => {
-            newsDiv.innerHTML += `
-                <div>
-                    <h3>${article.title}</h3>
-                    <p>${article.description}</p>
-                </div>
-            `;
-        });
-    }
 
+
+    // Function to fetch Twitter data
     function fetchTwitterData(bearerToken) {
         const twitterUsername = 'twitterdev'; // Replace with the username you want to fetch
-    
+
         fetch(`https://api.twitter.com/2/users/by/username/${twitterUsername}`, {
             headers: {
                 'Authorization': `Bearer ${bearerToken}`
