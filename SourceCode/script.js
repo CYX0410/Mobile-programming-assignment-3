@@ -1,15 +1,14 @@
 document.addEventListener('DOMContentLoaded', function() {
     const weatherApiKey = 'cd57c94913aa40358f9111256242406';
     const newsApiKey = 'd8589ff81289d079a7f70f7f69878dce';
-    const twitterBearerToken = 'AAAAAAAAAAAAAAAAAAAAAM7muQEAAAAAFoY6D4%2FusU1Ko77BO9A0QrTZqIc%3D9NEzCTb7pWGXBCNKPLbJTZurtlP17oBbH9AphKHqmOgS8s5z9G';
-
+    const youtubeApiKey = '84715ca26fmshaf7bfd9b2c34664p1b98b3jsn4d13552939d8';
     // Determine the current page and fetch data accordingly
     if (window.location.pathname.endsWith('weather.html')) {
         fetchWeatherData(weatherApiKey);
     } else if (window.location.pathname.endsWith('news.html')) {
         fetchNewsData(newsApiKey);
     } else if (window.location.pathname.endsWith('social.html')) {
-        fetchTwitterData(twitterBearerToken);
+        fetchYouTubeData(youtubeApiKey);
     }
 
     // Log user interaction
@@ -81,35 +80,58 @@ document.addEventListener('DOMContentLoaded', function() {
             .catch(error => console.error('Error fetching news data:', error));
     }
 
+            // Function to fetch YouTube data
+            async function fetchYouTubeData(apiKey) {
+                const url = 'https://youtube-data8.p.rapidapi.com/auto-complete/?q=cartoons_for_kids&hl=en&gl=US';
+                const options = {
+                    method: 'GET',
+                    headers: {
+                        'x-rapidapi-key': apiKey,
+                        'x-rapidapi-host': 'youtube-data8.p.rapidapi.com'
+                    }
+                };
 
-    // Function to fetch Twitter data
-    function fetchTwitterData(bearerToken) {
-        const twitterUsername = 'twitterdev'; // Replace with the username you want to fetch
-
-        fetch(`https://api.twitter.com/2/users/by/username/${twitterUsername}`, {
-            headers: {
-                'Authorization': `Bearer ${bearerToken}`
+                try {
+                    const response = await fetch(url, options);
+                    if (!response.ok) {
+                        throw new Error(`Network response was not ok: ${response.statusText}`);
+                    }
+                    const result = await response.json();
+                    console.log('API Response:', result); // Log the result for debugging
+                    displayYouTubeResults(result);
+                } catch (error) {
+                    console.error('Error fetching YouTube data:', error);
+                }
             }
-        })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-            return response.json();
-        })
-        .then(data => {
-            const socialDiv = document.getElementById('social-media-data');
-            socialDiv.innerHTML = `
-                <div>
-                    <h3>Twitter User: ${data.data.name}</h3>
-                    <p>Username: @${data.data.username}</p>
-                    <p>Description: ${data.data.description}</p>
-                </div>
-            `;
-        })
-        .catch(error => console.error('Error fetching Twitter data:', error));
-    }
 
+            // Function to display YouTube results
+            function displayYouTubeResults(data) {
+                const resultsDiv = document.getElementById('results');
+                if (!resultsDiv) {
+                    throw new Error('Element with ID "results" not found');
+                }
+
+                // Log the data structure for debugging
+                console.log('YouTube Data Structure:', data);
+
+                // Check if suggestions array exists and is not empty
+                if (data && data.suggestions && Array.isArray(data.suggestions) && data.suggestions.length > 0) {
+                    // Clear previous content if any
+                    resultsDiv.innerHTML = '';
+
+                    // Display each suggestion as a separate item
+                    data.suggestions.forEach(item => {
+                        const itemDiv = document.createElement('div');
+                        itemDiv.className = 'item';
+                        itemDiv.innerHTML = `
+                            <div class="title">${item}</div>
+                        `;
+                        resultsDiv.appendChild(itemDiv);
+                    });
+                } else {
+                    resultsDiv.innerHTML = '<p>No suggestions found.</p>';
+                }
+            }
     // Function to log user interaction
     function logUserInteraction() {
         const date = new Date();
