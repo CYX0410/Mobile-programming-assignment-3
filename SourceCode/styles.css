@@ -86,7 +86,7 @@ nav ul li a:hover {
     align-items: center; /* Center align content horizontally */
 }
 
-#weather-data, #news-data, #social-media-data {
+#weather-data, #news-data{
     margin: 1em;
     width: 100%;
     max-width: 1000px;
@@ -238,8 +238,7 @@ nav ul li a:hover {
 }
 
 .covid00{
-    background-image: url("image/cvoidback.jpg");
-    background-repeat: no-repeat;
+    background-image: url("image/covidRepeatable.jpg");
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;

@@ -1,19 +1,25 @@
 document.addEventListener('DOMContentLoaded', function() {
+    // Define API keys
     const weatherApiKey = 'cd57c94913aa40358f9111256242406';
     const newsApiKey = 'd8589ff81289d079a7f70f7f69878dce';
     const covidApiKey = '84715ca26fmshaf7bfd9b2c34664p1b98b3jsn4d13552939d8';
 
     // Determine the current page and fetch data accordingly
-    if (window.location.pathname.endsWith('weather.html')) {
+    if (window.location.pathname.endsWith('index.html')) {
+        logUserInteraction('Visited');
+    } else if (window.location.pathname.endsWith('weather.html')) {
         fetchWeatherData(weatherApiKey);
+        logUserInteraction('Accessed weather page');
     } else if (window.location.pathname.endsWith('news.html')) {
         fetchNewsData(newsApiKey);
+        logUserInteraction('Accessed news page');
     } else if (window.location.pathname.endsWith('covid19.html')) {
         fetchCovidData(covidApiKey);
+        logUserInteraction('Accessed COVID-19 page');
+    } else if (window.location.pathname.endsWith('logs.html')) {
+        logUserInteraction('Accessed logging page');
+        displayUserLogs();
     }
-
-    // Log user interaction
-    logUserInteraction();
 
     // Function to fetch weather data
     function fetchWeatherData(apiKey) {
@@ -166,16 +172,56 @@ document.addEventListener('DOMContentLoaded', function() {
         errorDiv.textContent = message;
         errorDiv.style.display = 'block';
     }
+
     // Function to log user interaction
-    function logUserInteraction() {
+    function logUserInteraction(action) {
         const date = new Date();
         const logEntry = {
-            date: date.toISOString(),
-            page: window.location.pathname
+            date: date.toLocaleString(),
+            action: action,
+            page: getPageName()
         };
 
         let logs = JSON.parse(localStorage.getItem('userLogs')) || [];
         logs.push(logEntry);
         localStorage.setItem('userLogs', JSON.stringify(logs));
+    }
+
+    // Function to display user logs
+    function displayUserLogs() {
+        const logsTable = document.getElementById('logs-table');
+        const logsBody = document.getElementById('logs-body');
+
+        // Clear previous logs if any
+        logsBody.innerHTML = '';
+
+        // Retrieve logs from localStorage
+        let logs = JSON.parse(localStorage.getItem('userLogs')) || [];
+
+        // Display logs in the table
+        logs.forEach(log => {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td>${log.date}</td>
+                <td>${log.action}</td>
+                <td>${log.page}</td>
+            `;
+            logsBody.appendChild(row);
+        });
+    }
+
+    // Function to reset logs
+    const resetButton = document.getElementById('reset-button');
+    resetButton.addEventListener('click', function() {
+        localStorage.removeItem('userLogs');
+        displayUserLogs(); // Refresh logs display after reset
+    });
+
+    // Function to get the page name without file extension
+    function getPageName() {
+        const path = window.location.pathname;
+        const page = path.split('/').pop().replace('.html', '').replace('index', 'Home').replace('weather', 'Weather').replace('news', 'News').replace('covid19', 'COVID-19').replace('logs', 'Logging');
+
+        return page.charAt(0).toUpperCase() + page.slice(1);
     }
 });
