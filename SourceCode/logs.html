@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Logging Page</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        header {
+            background-image: url('image/logBackground.png');
+            background-size: cover; /* Ensures the background image covers the entire header */
+            background-position: center; /* Centers the background image */
+            padding: 1em 0;
+            margin-bottom: 1em;
+            height: 250px; /* Adjust height as needed */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+    </style>
+</head>
+<body>
+    <header class="text-center">
+        <h1>User Interaction Logs</h1>
+    </header>
+    <a href="index.html" class="back-button">
+        <svg width="34" height="34" viewBox="0 0 24 24">
+            <path fill="currentColor" d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/>
+        </svg>
+    </a>
+    <div class="container">
+        <button id="reset-button" class="btn btn-danger reset-button">Reset Logs</button>
+        <table id="logs-table" class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Date & Time</th>
+                    <th>Action</th>
+                    <th>Page</th>
+                </tr>
+            </thead>
+            <tbody id="logs-body">
+                <!-- Logs will be populated here -->
+            </tbody>
+        </table>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
+
+
+
