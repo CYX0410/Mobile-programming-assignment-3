@@ -95,7 +95,6 @@ document.addEventListener('DOMContentLoaded', function() {
             .catch(error => console.error('Error fetching news data:', error));
     }
 
-    // Function to fetch COVID-19 data
     async function fetchCovidData(apiKey) {
         const url = 'https://covid-19-data.p.rapidapi.com/country/code?format=json&code=my';
         const options = {
@@ -115,6 +114,7 @@ document.addEventListener('DOMContentLoaded', function() {
             displayCovidData(result);
         } catch (error) {
             console.error('Error fetching COVID-19 data:', error);
+            showErrorMessage('COVID-19 data could not be fetched. Please try again later.');
         }
     }
 
@@ -132,29 +132,43 @@ document.addEventListener('DOMContentLoaded', function() {
         const recoveryRate = ((recovered / confirmed) * 100).toFixed(2);
 
         let covidMessage = '';
+        let messageClass = '';
         if (confirmed > 1000000) {
             covidMessage = 'Warning: The number of confirmed cases is very high!';
+            messageClass = 'warning';
         } else if (deaths > 10000) {
             covidMessage = 'Warning: The death toll is quite significant!';
+            messageClass = 'warning';
         } else if (recovered > 500000) {
             covidMessage = 'Good news: Many people have recovered!';
+            messageClass = 'good-news';
         } else {
             covidMessage = 'Stay safe and follow health guidelines.';
+            messageClass = 'info';
         }
 
-        covidDiv.innerHTML = `
-            <p>Country: ${covidInfo.country}</p>
-            <p>Confirmed Cases: ${confirmed}</p>
-            <p>Deaths: ${deaths}</p>
-            <p>Recovered: ${recovered}</p>
-            <p>Active Cases: ${active}</p>
-            <p>Mortality Rate: ${mortalityRate}%</p>
-            <p>Recovery Rate: ${recoveryRate}%</p>
-            <p>${covidMessage}</p>
+        const table = `
+            <table>
+                <tr><th>Country</th><td>${covidInfo.country}</td></tr>
+                <tr><th>Confirmed Cases</th><td>${confirmed}</td></tr>
+                <tr><th>Deaths</th><td>${deaths}</td></tr>
+                <tr><th>Recovered</th><td>${recovered}</td></tr>
+                <tr><th>Active Cases</th><td>${active}</td></tr>
+                <tr><th>Mortality Rate</th><td>${mortalityRate}%</td></tr>
+                <tr><th>Recovery Rate</th><td>${recoveryRate}%</td></tr>
+                <tr><th>Message</th><td class="${messageClass}"><strong>${covidMessage}</strong></td></tr>
+            </table>
         `;
+
+        covidDiv.innerHTML = table;
     }
 
-
+    // Function to show error message
+    function showErrorMessage(message) {
+        const errorDiv = document.getElementById('error-message');
+        errorDiv.textContent = message;
+        errorDiv.style.display = 'block';
+    }
     // Function to log user interaction
     function logUserInteraction() {
         const date = new Date();
