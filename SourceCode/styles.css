@@ -189,17 +189,6 @@ nav ul li a:hover {
 }
 /*End of properties for backwards button*/
 
-body {
-    font-family: Arial, sans-serif;
-    
-    margin: 0;
-    padding: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    min-height: 100vh;
-}
 
 
 #covid-data {
@@ -250,6 +239,14 @@ body {
 
 .covid00{
     background-image: url("image/cvoidback.jpg");
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    min-height: 100vh;
 }
 .cc{
     background-color: rgb(16, 182, 215);
