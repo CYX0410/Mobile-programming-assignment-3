@@ -95,6 +95,7 @@ document.addEventListener('DOMContentLoaded', function() {
             .catch(error => console.error('Error fetching news data:', error));
     }
 
+    // Function to fetch COVID-19 data
     async function fetchCovidData(apiKey) {
         const url = 'https://covid-19-data.p.rapidapi.com/country/code?format=json&code=my';
         const options = {
@@ -126,21 +127,18 @@ document.addEventListener('DOMContentLoaded', function() {
         const confirmed = covidInfo.confirmed;
         const deaths = covidInfo.deaths;
         const recovered = covidInfo.recovered;
-        const active = confirmed - (deaths + recovered);
         
         const mortalityRate = ((deaths / confirmed) * 100).toFixed(2);
         const recoveryRate = ((recovered / confirmed) * 100).toFixed(2);
 
         let covidMessage = '';
         let messageClass = '';
-        if (confirmed > 1000000) {
-            covidMessage = 'Warning: The number of confirmed cases is very high!';
+
+        if (mortalityRate > 3) {
+            covidMessage = 'Warning: High mortality rate detected!';
             messageClass = 'warning';
-        } else if (deaths > 10000) {
-            covidMessage = 'Warning: The death toll is quite significant!';
-            messageClass = 'warning';
-        } else if (recovered > 500000) {
-            covidMessage = 'Good news: Many people have recovered!';
+        } else if (recoveryRate > 70) {
+            covidMessage = 'Good news: High recovery rate observed!';
             messageClass = 'good-news';
         } else {
             covidMessage = 'Stay safe and follow health guidelines.';
@@ -153,7 +151,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 <tr><th>Confirmed Cases</th><td>${confirmed}</td></tr>
                 <tr><th>Deaths</th><td>${deaths}</td></tr>
                 <tr><th>Recovered</th><td>${recovered}</td></tr>
-                <tr><th>Active Cases</th><td>${active}</td></tr>
                 <tr><th>Mortality Rate</th><td>${mortalityRate}%</td></tr>
                 <tr><th>Recovery Rate</th><td>${recoveryRate}%</td></tr>
                 <tr><th>Message</th><td class="${messageClass}"><strong>${covidMessage}</strong></td></tr>
