@@ -1,21 +1,23 @@
 document.addEventListener('DOMContentLoaded', function() {
     const weatherApiKey = 'cd57c94913aa40358f9111256242406';
     const newsApiKey = 'd8589ff81289d079a7f70f7f69878dce';
+    const covidApiKey = '84715ca26fmshaf7bfd9b2c34664p1b98b3jsn4d13552939d8';
+
     // Determine the current page and fetch data accordingly
     if (window.location.pathname.endsWith('weather.html')) {
         fetchWeatherData(weatherApiKey);
     } else if (window.location.pathname.endsWith('news.html')) {
         fetchNewsData(newsApiKey);
-    } else if (window.location.pathname.endsWith('calculator.html')) {
-
+    } else if (window.location.pathname.endsWith('covid19.html')) {
+        fetchCovidData(covidApiKey);
     }
 
     // Log user interaction
     logUserInteraction();
 
     // Function to fetch weather data
-    function fetchWeatherData() {
-        fetch(`https://api.weatherapi.com/v1/current.json?key=${weatherApiKey}&q=Malaysia`)
+    function fetchWeatherData(apiKey) {
+        fetch(`https://api.weatherapi.com/v1/current.json?key=${apiKey}&q=Malaysia`)
             .then(response => {
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
@@ -32,10 +34,24 @@ document.addEventListener('DOMContentLoaded', function() {
     // Function to display weather information
     function displayWeather(data) {
         const weatherDiv = document.getElementById('weather-data');
+        const tempC = data.current.temp_c;
+        const tempF = (tempC * 9/5) + 32;
+        const condition = data.current.condition.text;
+
+        let weatherMessage = '';
+        if (tempC > 30) {
+            weatherMessage = 'It\'s quite hot outside!';
+        } else if (tempC < 15) {
+            weatherMessage = 'It\'s quite cold outside!';
+        } else {
+            weatherMessage = 'The weather is moderate.';
+        }
+
         weatherDiv.innerHTML = `
             <p>Location: ${data.location.name}</p>
-            <p>Temperature: ${data.current.temp_c}°C</p>
-            <p>Condition: ${data.current.condition.text}</p>
+            <p>Temperature: ${tempC}°C / ${tempF.toFixed(2)}°F</p>
+            <p>Condition: ${condition}</p>
+            <p>${weatherMessage}</p>
         `;
     }
 
@@ -79,6 +95,65 @@ document.addEventListener('DOMContentLoaded', function() {
             .catch(error => console.error('Error fetching news data:', error));
     }
 
+    // Function to fetch COVID-19 data
+    async function fetchCovidData(apiKey) {
+        const url = 'https://covid-19-data.p.rapidapi.com/country/code?format=json&code=my';
+        const options = {
+            method: 'GET',
+            headers: {
+                'x-rapidapi-key': apiKey,
+                'x-rapidapi-host': 'covid-19-data.p.rapidapi.com'
+            }
+        };
+
+        try {
+            const response = await fetch(url, options);
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            const result = await response.json();
+            displayCovidData(result);
+        } catch (error) {
+            console.error('Error fetching COVID-19 data:', error);
+        }
+    }
+
+    // Function to display COVID-19 data
+    function displayCovidData(data) {
+        const covidDiv = document.getElementById('covid-data');
+        const covidInfo = data[0];
+        
+        const confirmed = covidInfo.confirmed;
+        const deaths = covidInfo.deaths;
+        const recovered = covidInfo.recovered;
+        const active = confirmed - (deaths + recovered);
+        
+        const mortalityRate = ((deaths / confirmed) * 100).toFixed(2);
+        const recoveryRate = ((recovered / confirmed) * 100).toFixed(2);
+
+        let covidMessage = '';
+        if (confirmed > 1000000) {
+            covidMessage = 'Warning: The number of confirmed cases is very high!';
+        } else if (deaths > 10000) {
+            covidMessage = 'Warning: The death toll is quite significant!';
+        } else if (recovered > 500000) {
+            covidMessage = 'Good news: Many people have recovered!';
+        } else {
+            covidMessage = 'Stay safe and follow health guidelines.';
+        }
+
+        covidDiv.innerHTML = `
+            <p>Country: ${covidInfo.country}</p>
+            <p>Confirmed Cases: ${confirmed}</p>
+            <p>Deaths: ${deaths}</p>
+            <p>Recovered: ${recovered}</p>
+            <p>Active Cases: ${active}</p>
+            <p>Mortality Rate: ${mortalityRate}%</p>
+            <p>Recovery Rate: ${recoveryRate}%</p>
+            <p>${covidMessage}</p>
+        `;
+    }
+
 
     // Function to log user interaction
     function logUserInteraction() {
@@ -93,4 +168,3 @@ document.addEventListener('DOMContentLoaded', function() {
         localStorage.setItem('userLogs', JSON.stringify(logs));
     }
 });
-
