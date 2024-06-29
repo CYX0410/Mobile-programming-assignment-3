@@ -87,7 +87,6 @@ nav ul li a:hover {
     align-items: center; /* Center align content horizontally */
 }
 
-#weather-data, #news-data {
 #weather-data, #news-data{
     margin: 1em;
     width: 100%;
@@ -397,6 +396,6 @@ th {
     background-color: #f2f2f2;
 }
 
-tr:nth-child(even) {
+tr:nth-child(even){
     background-color: #f9f9f9;
 }

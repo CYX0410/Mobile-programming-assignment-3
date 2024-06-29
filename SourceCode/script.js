@@ -28,14 +28,6 @@ document.addEventListener('DOMContentLoaded', function() {
         logUserInteraction('Accessed logging page');
         displayUserLogs();
     }
-        logUserInteraction('Accessed news page');
-    } else if (window.location.pathname.endsWith('covid19.html')) {
-        fetchCovidData(covidApiKey);
-        logUserInteraction('Accessed COVID-19 page');
-    } else if (window.location.pathname.endsWith('logs.html')) {
-        logUserInteraction('Accessed logging page');
-        displayUserLogs();
-    }
 
     // Function to fetch weather data
     async function checkWeather(city){
@@ -52,45 +44,26 @@ document.addEventListener('DOMContentLoaded', function() {
             document.querySelector(".humidity").innerHTML = data.main.humidity + "%";
             document.querySelector(".wind").innerHTML = data.wind.speed + " km/h";
 
-            if(data.weather[0].main == "Clouds"){
-                weatherIcon.src = "image/weather/clouds.png";
-            }
-            else if(data.weather[0].main == "Clear"){
-                weatherIcon.src = "image/weather/clear.png";
-            }
-            else if(data.weather[0].main == "Rain"){
-                weatherIcon.src = "image/weather/rain.png";
-            }
-            else if(data.weather[0].main == "Mist"){
-                weatherIcon.src = "image/weather/mist.png";
-            }
-            else if(data.weather[0].main == "Snow"){
-                weatherIcon.src = "image/weather/snow.png";
-            }
-            else if(data.weather[0].main == "Thunderstorm"){
-                weatherIcon.src = "image/weather/thunderstorm.png";
-            }
-            else if(data.weather[0].main == "Drizzle"){
-                weatherIcon.src = "image/weather/drizzle.png";
-            }
-            else if(data.weather[0].main == "Smoke"){
-                weatherIcon.src = "image/weather/smoke.png";
-            }
-            else if(data.weather[0].main == "Haze"){
-                weatherIcon.src = "image/weather/haze.png";
-            }
-            else if(data.weather[0].main == "Dust" || data.weather[0].main == "Ash"){
-                weatherIcon.src = "image/weather/dustAsh.png";
-            }
-            else if(data.weather[0].main == "Fog"){
-                weatherIcon.src = "image/weather/fog.png";
-            }
-            else if(data.weather[0].main == "Sand"){
-                weatherIcon.src = "image/weather/sand.png";
-            }
-            else if(data.weather[0].main == "Tornado"){
-                weatherIcon.src = "image/weather/tornado.png";
-            }
+            // Set weather icon based on weather condition
+            const condition = data.weather[0].main.toLowerCase();
+            const iconMap = {
+                clouds: 'clouds.png',
+                clear: 'clear.png',
+                rain: 'rain.png',
+                mist: 'mist.png',
+                snow: 'snow.png',
+                thunderstorm: 'thunderstorm.png',
+                drizzle: 'drizzle.png',
+                smoke: 'smoke.png',
+                haze: 'haze.png',
+                dust: 'dustAsh.png',
+                ash: 'dustAsh.png',
+                fog: 'fog.png',
+                sand: 'sand.png',
+                tornado: 'tornado.png'
+            };
+            weatherIcon.src = `image/weather/${iconMap[condition] || 'default.png'}`;
+
 
             document.querySelector(".weather").style.display = "block";
             document.querySelector(".error").style.display = "none";
@@ -126,45 +99,25 @@ document.addEventListener('DOMContentLoaded', function() {
             let iconUrl = `image/weather/clouds.png`;
             const temp = Math.round(forecast.main.temp) + '°C';
 
-            if(forecast.weather[0].main == "Clouds"){
-                iconUrl = "image/weather/clouds.png";
-            }
-            else if(forecast.weather[0].main == "Clear"){
-                iconUrl = "image/weather/clear.png";
-            }
-            else if(forecast.weather[0].main == "Rain"){
-                iconUrl = "image/weather/rain.png";
-            }
-            else if(forecast.weather[0].main == "Mist"){
-                iconUrl = "image/weather/mist.png";
-            }
-            else if(forecast.weather[0].main == "Snow"){
-                iconUrl = "image/weather/snow.png";
-            }
-            else if(forecast.weather[0].main == "Thunderstorm"){
-                iconUrl = "image/weather/thunderstorm.png";
-            }
-            else if(forecast.weather[0].main == "Drizzle"){
-                iconUrl = "image/weather/drizzle.png";
-            }
-            else if(forecast.weather[0].main == "Smoke"){
-                iconUrl = "image/weather/smoke.png";
-            }
-            else if(forecast.weather[0].main == "Haze"){
-                iconUrl = "image/weather/haze.png";
-            }
-            else if(forecast.weather[0].main == "Dust" || data.weather[0].main == "Ash"){
-                iconUrl = "image/weather/dustAsh.png";
-            }
-            else if(forecast.weather[0].main == "Fog"){
-                iconUrl = "image/weather/fog.png";
-            }
-            else if(forecast.weather[0].main == "Sand"){
-                iconUrl = "image/weather/sand.png";
-            }
-            else if(forecast.weather[0].main == "Tornado"){
-                iconUrl = "image/weather/tornado.png";
-            }
+            // Set weather icon based on weather condition
+            const condition = forecast.weather[0].main.toLowerCase();
+            const iconMap = {
+                clouds: 'clouds.png',
+                clear: 'clear.png',
+                rain: 'rain.png',
+                mist: 'mist.png',
+                snow: 'snow.png',
+                thunderstorm: 'thunderstorm.png',
+                drizzle: 'drizzle.png',
+                smoke: 'smoke.png',
+                haze: 'haze.png',
+                dust: 'dustAsh.png',
+                ash: 'dustAsh.png',
+                fog: 'fog.png',
+                sand: 'sand.png',
+                tornado: 'tornado.png'
+            };
+            iconUrl = `image/weather/${iconMap[condition] || 'default.png'}`;
 
             forecastHour.innerHTML = `
                 <p>${time}</p>
@@ -177,80 +130,80 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
    // Fetch 5-day forecast data (limited to 6 days including the current day)
-async function fetchForecast5Days(city) {
-    const response = await fetch(forecastApiUrl + city + `&appid=${weatherApiKey}`);
-    const data = await response.json();
+    async function fetchForecast5Days(city) {
+        const response = await fetch(forecastApiUrl + city + `&appid=${weatherApiKey}`);
+        const data = await response.json();
 
-    const chartLabels = [];
-    const chartData = [];
-    const forecastDays = {};
+        const chartLabels = [];
+        const chartData = [];
+        const forecastDays = {};
 
-    data.list.forEach(forecast => {
-        const date = new Date(forecast.dt * 1000);
-        const label = date.toLocaleDateString([], { month: 'short', day: 'numeric' });
+        data.list.forEach(forecast => {
+            const date = new Date(forecast.dt * 1000);
+            const label = date.toLocaleDateString([], { month: 'short', day: 'numeric' });
 
-        // Check if the date is already included
-        if (!forecastDays[label]) {
-            forecastDays[label] = forecast.main.temp; // Store the temperature for the date
+            // Check if the date is already included
+            if (!forecastDays[label]) {
+                forecastDays[label] = forecast.main.temp; // Store the temperature for the date
+            }
+        });
+
+        // Convert the forecastDays object to arrays and limit to 6 days
+        Object.keys(forecastDays).slice(0, 6).forEach((label) => {
+            chartLabels.push(label);
+            chartData.push(forecastDays[label]);
+        });
+
+        const ctx = document.getElementById('weather-chart').getContext('2d');
+        
+        // Destroy the previous chart instance if it exists
+        if (weatherChart) {
+            weatherChart.destroy();
         }
-    });
-
-    // Convert the forecastDays object to arrays and limit to 6 days
-    Object.keys(forecastDays).slice(0, 6).forEach((label) => {
-        chartLabels.push(label);
-        chartData.push(forecastDays[label]);
-    });
-
-    const ctx = document.getElementById('weather-chart').getContext('2d');
-    
-    // Destroy the previous chart instance if it exists
-    if (weatherChart) {
-        weatherChart.destroy();
-    }
-    
-    weatherChart = new Chart(ctx, {
-        type: 'line',
-        data: {
-            labels: chartLabels,
-            datasets: [{
-                label: 'Temperature (°C)',
-                data: chartData,
-                borderColor: 'rgba(255, 255, 255, 1)',
-                borderWidth: 1,
-                fill: false,
-            }]
-        },
-        options: {
-            plugins: {
-                legend: {
-                    labels: {
-                        color: 'rgba(255, 255, 255, 1)' // Change legend labels color to white
-                    }
-                }
+        
+        weatherChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: chartLabels,
+                datasets: [{
+                    label: 'Temperature (°C)',
+                    data: chartData,
+                    borderColor: 'rgba(255, 255, 255, 1)',
+                    borderWidth: 1,
+                    fill: false,
+                }]
             },
-            scales: {
-                x: {
-                    grid:{
-                        display: false
-                    },
-                    beginAtZero: true,
-                    ticks: {
-                        color: 'white'
+            options: {
+                plugins: {
+                    legend: {
+                        labels: {
+                            color: 'rgba(255, 255, 255, 1)' // Change legend labels color to white
+                        }
                     }
                 },
-                y: {
-                    grid:{
-                        display: false
+                scales: {
+                    x: {
+                        grid:{
+                            display: false
+                        },
+                        beginAtZero: true,
+                        ticks: {
+                            color: 'white'
+                        }
                     },
-                    beginAtZero: true,
-                    ticks: {
-                        color: 'white'
+                    y: {
+                        grid:{
+                            display: false
+                        },
+                        beginAtZero: true,
+                        ticks: {
+                            color: 'white'
+                        }
                     }
                 }
             }
-        }
-    });
-}
+        });
+    }
 
     // Function to fetch news data
     function fetchNewsData(apiKey) {
