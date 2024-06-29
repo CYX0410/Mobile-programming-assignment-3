@@ -28,6 +28,14 @@ document.addEventListener('DOMContentLoaded', function() {
         logUserInteraction('Accessed logging page');
         displayUserLogs();
     }
+        logUserInteraction('Accessed news page');
+    } else if (window.location.pathname.endsWith('covid19.html')) {
+        fetchCovidData(covidApiKey);
+        logUserInteraction('Accessed COVID-19 page');
+    } else if (window.location.pathname.endsWith('logs.html')) {
+        logUserInteraction('Accessed logging page');
+        displayUserLogs();
+    }
 
     // Function to fetch weather data
     async function checkWeather(city){
