@@ -19,6 +19,49 @@
             justify-content: center;
         }
     </style>
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+    const resetButton = document.getElementById('reset-button');
+
+    if (resetButton) {
+        resetButton.addEventListener('click', function() {
+            console.log("Reset button clicked!");
+            try {
+                localStorage.removeItem('userLogs');
+                displayUserLogs(); // Ensure displayUserLogs function exists and updates the view
+            } catch (error) {
+                console.error('Error resetting logs:', error);
+            }
+        });
+    } else {
+        console.error("Reset button element not found!");
+    }
+
+    // Define displayUserLogs function here or ensure it is defined elsewhere in your HTML
+    function displayUserLogs() {
+        const logsTable = document.getElementById('logs-table');
+        const logsBody = document.getElementById('logs-body');
+
+        // Clear previous logs if any
+        logsBody.innerHTML = '';
+
+        // Retrieve logs from localStorage
+        let logs = JSON.parse(localStorage.getItem('userLogs')) || [];
+
+        // Display logs in the table
+        logs.forEach(log => {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td>${log.date}</td>
+                <td>${log.action}</td>
+                <td>${log.page}</td>
+            `;
+            logsBody.appendChild(row);
+        });
+    }
+});
+</script>
+
 </head>
 <body>
     <header class="text-center">
@@ -47,5 +90,6 @@
     <script src="script.js"></script>
 </body>
 </html>
+
 
 
