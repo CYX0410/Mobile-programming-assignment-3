@@ -399,3 +399,15 @@ th {
 tr:nth-child(even){
     background-color: #f9f9f9;
 }
+/* Existing CSS */
+
+#current-date {
+    font-size: 1.2em;
+    color: #fff;
+    text-align: center;
+    margin-top: 10px;
+    background: rgba(0, 0, 0, 0.5);
+    padding: 10px;
+    border-radius: 10px;
+    display: inline-block;
+}

@@ -12,6 +12,9 @@ document.addEventListener('DOMContentLoaded', function() {
     const searchBtn = document.querySelector(".search button");
     const weatherIcon = document.querySelector(".weather-icon");
 
+    const currentDateElement = document.getElementById('current-date');
+    const currentDate = moment().format('MMMM Do YYYY');
+    currentDateElement.textContent = `Today's Date: ${currentDate}`;
     // Determine the current page and fetch data accordingly
     if (window.location.pathname.endsWith('index.html')) {
         logUserInteraction('Visited');
@@ -94,11 +97,9 @@ document.addEventListener('DOMContentLoaded', function() {
         forecastList.forEach(forecast => {
             const forecastHour = document.createElement('div');
             forecastHour.classList.add('forecast-hour');
-
             const time = new Date(forecast.dt * 1000).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
             let iconUrl = `image/weather/clouds.png`;
             const temp = Math.round(forecast.main.temp) + '°C';
-
             // Set weather icon based on weather condition
             const condition = forecast.weather[0].main.toLowerCase();
             const iconMap = {
@@ -123,12 +124,10 @@ document.addEventListener('DOMContentLoaded', function() {
                 <p>${time}</p>
                 <img src="${iconUrl}" alt="Weather icon">
                 <p>${temp}</p>
-            `;
-            
+            `;         
             forecast3hRow.appendChild(forecastHour);
         });
     }
-
    // Fetch 5-day forecast data (limited to 6 days including the current day)
     async function fetchForecast5Days(city) {
         const response = await fetch(forecastApiUrl + city + `&appid=${weatherApiKey}`);
