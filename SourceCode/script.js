@@ -11,10 +11,8 @@ document.addEventListener('DOMContentLoaded', function() {
     const searchBox = document.querySelector(".search input");
     const searchBtn = document.querySelector(".search button");
     const weatherIcon = document.querySelector(".weather-icon");
+    
 
-    const currentDateElement = document.getElementById('current-date');
-    const currentDate = moment().format('MMMM Do YYYY');
-    currentDateElement.textContent = `Today's Date: ${currentDate}`;
     // Determine the current page and fetch data accordingly
     if (window.location.pathname.endsWith('index.html')) {
         logUserInteraction('Visited');
@@ -97,9 +95,11 @@ document.addEventListener('DOMContentLoaded', function() {
         forecastList.forEach(forecast => {
             const forecastHour = document.createElement('div');
             forecastHour.classList.add('forecast-hour');
+
             const time = new Date(forecast.dt * 1000).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
             let iconUrl = `image/weather/clouds.png`;
             const temp = Math.round(forecast.main.temp) + '°C';
+
             // Set weather icon based on weather condition
             const condition = forecast.weather[0].main.toLowerCase();
             const iconMap = {
@@ -124,10 +124,12 @@ document.addEventListener('DOMContentLoaded', function() {
                 <p>${time}</p>
                 <img src="${iconUrl}" alt="Weather icon">
                 <p>${temp}</p>
-            `;         
+            `;
+            
             forecast3hRow.appendChild(forecastHour);
         });
     }
+
    // Fetch 5-day forecast data (limited to 6 days including the current day)
     async function fetchForecast5Days(city) {
         const response = await fetch(forecastApiUrl + city + `&appid=${weatherApiKey}`);
@@ -252,47 +254,45 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // Function to display COVID-19 data
-   // Function to display COVID-19 data
-function displayCovidData(data) {
-    const covidDiv = document.getElementById('covid-data');
-    const covidInfo = data[0];
-    
-    const confirmed = covidInfo.confirmed;
-    const deaths = covidInfo.deaths;
-    const recovered = covidInfo.recovered;
-    
-    const mortalityRate = ((deaths / confirmed) * 100).toFixed(2);
-    const recoveryRate = ((recovered / confirmed) * 100).toFixed(2);
+    function displayCovidData(data) {
+        const covidDiv = document.getElementById('covid-data');
+        const covidInfo = data[0];
+        
+        const confirmed = covidInfo.confirmed;
+        const deaths = covidInfo.deaths;
+        const recovered = covidInfo.recovered;
+        
+        const mortalityRate = ((deaths / confirmed) * 100).toFixed(2);
+        const recoveryRate = ((recovered / confirmed) * 100).toFixed(2);
 
-    let covidMessage = '';
-    let messageClass = '';
+        let covidMessage = '';
+        let messageClass = '';
 
-    if (mortalityRate > 3) {
-        covidMessage = 'Warning: High mortality rate detected!';
-        messageClass = 'warning';
-    } else if (recoveryRate > 70) {
-        covidMessage = 'Good news: High recovery rate observed!';
-        messageClass = 'good-news';
-    } else {
-        covidMessage = 'Stay safe and follow health guidelines.';
-        messageClass = 'info';
+        if (mortalityRate > 3) {
+            covidMessage = 'Warning: High mortality rate detected!';
+            messageClass = 'warning';
+        } else if (recoveryRate > 70) {
+            covidMessage = 'Good news: High recovery rate observed!';
+            messageClass = 'good-news';
+        } else {
+            covidMessage = 'Stay safe and follow health guidelines.';
+            messageClass = 'info';
+        }
+
+        const table = `
+            <table>
+                <tr><th>Country</th><td>${covidInfo.country}</td></tr>
+                <tr><th>Confirmed Cases</th><td>${confirmed}</td></tr>
+                <tr><th>Deaths</th><td>${deaths}</td></tr>
+                <tr><th>Recovered</th><td>${recovered}</td></tr>
+                <tr><th>Mortality Rate</th><td>${mortalityRate}%</td></tr>
+                <tr><th>Recovery Rate</th><td>${recoveryRate}%</td></tr>
+                <tr><th>Message</th><td class="${messageClass}"><strong>${covidMessage}</strong></td></tr>
+            </table>
+        `;
+
+        covidDiv.innerHTML = table;
     }
-
-    
-    const table = `
-        <table>
-            <tr><th>Country</th><td>${covidInfo.country}</td></tr>
-            <tr><th>Confirmed Cases</th><td>${confirmed}</td></tr>
-            <tr><th>Deaths</th><td>${deaths}</td></tr>
-            <tr><th>Recovered</th><td>${recovered}</td></tr>
-            <tr><th>Mortality Rate</th><td>${mortalityRate}%</td></tr>
-            <tr><th>Recovery Rate</th><td>${recoveryRate}%</td></tr>
-            <tr><th>Message</th><td class="${messageClass}"><strong>${covidMessage}</strong></td></tr>
-        </table>
-    `;
-
-    covidDiv.innerHTML = table;
-}
 
     // Function to show error message
     function showErrorMessage(message) {
@@ -315,7 +315,7 @@ function displayCovidData(data) {
         localStorage.setItem('userLogs', JSON.stringify(logs));
     }
 
-    // Function to display user logs
+    // Define displayUserLogs function here or ensure it is defined elsewhere in your HTML
     function displayUserLogs() {
         const logsTable = document.getElementById('logs-table');
         const logsBody = document.getElementById('logs-body');
@@ -338,12 +338,6 @@ function displayCovidData(data) {
         });
     }
 
-    // Function to reset logs
-    const resetButton = document.getElementById('reset-button');
-    resetButton.addEventListener('click', function() {
-        localStorage.removeItem('userLogs');
-        displayUserLogs(); // Refresh logs display after reset
-    });
 
     // Function to get the page name without file extension
     function getPageName() {
