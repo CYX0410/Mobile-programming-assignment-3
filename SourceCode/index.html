@@ -16,7 +16,7 @@
     </div>
     <header>
         <h1>Welcome to Up2Date</h1>
-            <div id="current-date"></div>         
+        <div id="current-date"></div>
     </header>
     <nav>
         <ul>
@@ -26,6 +26,13 @@
             <li><a href="logs.html"><img src="image/logs_icon.png" alt="Logs" class="icon"> View Logs</a></li><br><br>
         </ul>
     </nav>
-    <script src="script.js"></script>
+    <script>
+        // Wait for DOM to be ready
+        document.addEventListener('DOMContentLoaded', function() {
+            const currentDateElement = document.getElementById('current-date');
+            const currentDate = moment().format('MMMM Do YYYY');
+            currentDateElement.textContent = `Today's Date: ${currentDate}`;
+        });
+    </script>
 </body>
 </html>
