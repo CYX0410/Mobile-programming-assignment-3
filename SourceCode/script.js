@@ -253,45 +253,49 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // Function to display COVID-19 data
-    function displayCovidData(data) {
-        const covidDiv = document.getElementById('covid-data');
-        const covidInfo = data[0];
-        
-        const confirmed = covidInfo.confirmed;
-        const deaths = covidInfo.deaths;
-        const recovered = covidInfo.recovered;
-        
-        const mortalityRate = ((deaths / confirmed) * 100).toFixed(2);
-        const recoveryRate = ((recovered / confirmed) * 100).toFixed(2);
+   // Function to display COVID-19 data
+function displayCovidData(data) {
+    const covidDiv = document.getElementById('covid-data');
+    const covidInfo = data[0];
+    
+    const confirmed = covidInfo.confirmed;
+    const deaths = covidInfo.deaths;
+    const recovered = covidInfo.recovered;
+    
+    const mortalityRate = ((deaths / confirmed) * 100).toFixed(2);
+    const recoveryRate = ((recovered / confirmed) * 100).toFixed(2);
 
-        let covidMessage = '';
-        let messageClass = '';
+    let covidMessage = '';
+    let messageClass = '';
 
-        if (mortalityRate > 3) {
-            covidMessage = 'Warning: High mortality rate detected!';
-            messageClass = 'warning';
-        } else if (recoveryRate > 70) {
-            covidMessage = 'Good news: High recovery rate observed!';
-            messageClass = 'good-news';
-        } else {
-            covidMessage = 'Stay safe and follow health guidelines.';
-            messageClass = 'info';
-        }
-
-        const table = `
-            <table>
-                <tr><th>Country</th><td>${covidInfo.country}</td></tr>
-                <tr><th>Confirmed Cases</th><td>${confirmed}</td></tr>
-                <tr><th>Deaths</th><td>${deaths}</td></tr>
-                <tr><th>Recovered</th><td>${recovered}</td></tr>
-                <tr><th>Mortality Rate</th><td>${mortalityRate}%</td></tr>
-                <tr><th>Recovery Rate</th><td>${recoveryRate}%</td></tr>
-                <tr><th>Message</th><td class="${messageClass}"><strong>${covidMessage}</strong></td></tr>
-            </table>
-        `;
-
-        covidDiv.innerHTML = table;
+    if (mortalityRate > 3) {
+        covidMessage = 'Warning: High mortality rate detected!';
+        messageClass = 'warning';
+    } else if (recoveryRate > 70) {
+        covidMessage = 'Good news: High recovery rate observed!';
+        messageClass = 'good-news';
+    } else {
+        covidMessage = 'Stay safe and follow health guidelines.';
+        messageClass = 'info';
     }
+
+    const currentDate = moment().format('MMMM Do YYYY'); // Get the current date using moment.js
+
+    const table = `
+        <table>
+            <tr><th>Country</th><td>${covidInfo.country}</td></tr>
+            <tr><th>Date</th><td>${currentDate}</td></tr>
+            <tr><th>Confirmed Cases</th><td>${confirmed}</td></tr>
+            <tr><th>Deaths</th><td>${deaths}</td></tr>
+            <tr><th>Recovered</th><td>${recovered}</td></tr>
+            <tr><th>Mortality Rate</th><td>${mortalityRate}%</td></tr>
+            <tr><th>Recovery Rate</th><td>${recoveryRate}%</td></tr>
+            <tr><th>Message</th><td class="${messageClass}"><strong>${covidMessage}</strong></td></tr>
+        </table>
+    `;
+
+    covidDiv.innerHTML = table;
+}
 
     // Function to show error message
     function showErrorMessage(message) {
