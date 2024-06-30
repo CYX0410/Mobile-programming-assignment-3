@@ -9,7 +9,7 @@ body {
 header {
     background-color: rgba(0, 0, 0, 0.5);
     color: white;
-    padding: 1em 0;
+    padding: 3em 0;
     margin-bottom: 1em;
 }
 
@@ -97,23 +97,29 @@ nav ul li a:hover {
 }
 
 /*This section onwards is properties for weather html*/
-.card{
+/* Adjusted properties for weather HTML */
+
+.card {
     width: 90%;
-    max-width: 470px;
+    max-width: 1200px; /* Adjusted max-width for responsiveness */
     background: linear-gradient(135deg, #0CBABA, #380036);
     color: #fff;
-    margin: 100px auto 0;
+    margin: 100px auto; /* Increased top margin slightly */
     border-radius: 20px;
     padding: 40px 35px;
     text-align: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Added a subtle shadow */
 }
-.search{
+
+.search {
     width: 100%;
     display: flex;
     align-items: center;
     justify-content: space-between;
+    margin-bottom: 20px; /* Added margin at the bottom for spacing */
 }
-.search input{
+
+.search input {
     border: 0;
     outline: 0;
     background: #ebfffc;
@@ -122,10 +128,10 @@ nav ul li a:hover {
     height: 40px;
     border-radius: 30px;
     flex: 1;
-    margin-right: 16px;
     font-size: 18px;
 }
-.search button{
+
+.search button {
     border: 0;
     outline: 0;
     background: #ebfffc;
@@ -134,84 +140,107 @@ nav ul li a:hover {
     height: 60px;
     cursor: pointer;
 }
-.search button img{
+
+.search button img {
     width: 16px;
 }
-.weather-icon{
+
+.weather-icon {
     width: 160px;
-    margin-top: 40px;
+    margin-top: 20px; /* Adjusted margin-top */
     margin-bottom: 20px;
 }
-.weather h1{
-    font-size: 70px;
+
+.weather h1 {
+    font-size: 60px; /* Slightly reduced font size */
     font-weight: 500;
-    margin-top: -1px;
+    margin-top: -10px; /* Adjusted margin-top */
 }
-.weather h2{
-    font-size: 35px;
+
+.weather h2 {
+    font-size: 30px; /* Slightly reduced font size */
     font-weight: 400;
-    margin-top: -40px;
+    margin-top: -20px; /* Adjusted margin-top */
 }
-.details{
+
+.details {
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    padding: 0 20px;
-    margin-top: 50px;
+    justify-content: space-around; /* Centered details horizontally */
+    padding: 20px 0; /* Increased padding for better spacing */
+    margin-top: 30px; /* Adjusted margin-top */
 }
-.col{
+
+.col {
     display: flex;
     align-items: center;
     text-align: left;
 }
-.col img{
-    width: 40px;
+
+.col img {
+    width: 30px; /* Slightly reduced image size */
     margin-right: 10px;
 }
-.humidity, .wind{
-    font-size: 30px;
-    margin-bottom: -10px;
+
+.humidity, .wind {
+    font-size: 24px; /* Reduced font size */
+    margin-bottom: 0; /* Removed margin-bottom */
 }
-.weather{
+
+.weather {
     display: none;
 }
-.error{
+
+.error {
     text-align: center;
     font-size: 18px;
     margin-top: 10px;
     display: none;
 }
+
 .forecast-6h, .forecast-5d {
     margin-top: 30px;
 }
+
 .forecast-row {
     display: flex;
     justify-content: space-around;
 }
+
 .forecast-hour {
     text-align: center;
     font-size: 14px;
 }
+
 .forecast-hour img {
     width: 40px;
     height: 40px;
 }
+
 #weather-chart {
     margin-top: 20px;
 }
-.forecast-hour{
-    background-color: rgb(0,0,0,0.3); 
-    color: #fff; 
-    padding: 10px; 
-    border-radius: 10px; 
-    margin: 5px; 
+
+.forecast-hour {
+    background-color: rgba(0, 0, 0, 0.3);
+    color: #fff;
+    padding: 10px;
+    border-radius: 10px;
+    margin: 5px;
     text-align: center;
 }
-#weather-chart{
-    background-color: rgb(0,0,0,0.3); 
+
+#weather-chart {
+    background-color: rgba(0, 0, 0, 0.3);
     margin: 5px;
     padding: 15px;
     border-radius: 10px;
+}
+
+@media (max-width: 768px) {
+    .card {
+        padding: 20px; /* Adjusted padding for smaller screens */
+    }
 }
 /*End of adjustment for weather html*/
 
@@ -399,7 +428,6 @@ th {
 tr:nth-child(even){
     background-color: #f9f9f9;
 }
-/* Existing CSS */
 
 #current-date {
     font-size: 1.2em;
