@@ -279,12 +279,10 @@ function displayCovidData(data) {
         messageClass = 'info';
     }
 
-    const currentDate = moment().format('MMMM Do YYYY'); // Get the current date using moment.js
-
+    
     const table = `
         <table>
             <tr><th>Country</th><td>${covidInfo.country}</td></tr>
-            <tr><th>Date</th><td>${currentDate}</td></tr>
             <tr><th>Confirmed Cases</th><td>${confirmed}</td></tr>
             <tr><th>Deaths</th><td>${deaths}</td></tr>
             <tr><th>Recovered</th><td>${recovered}</td></tr>
