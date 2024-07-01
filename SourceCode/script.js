@@ -14,9 +14,7 @@ document.addEventListener('DOMContentLoaded', function() {
     
 
     // Determine the current page and fetch data accordingly
-    if (window.location.pathname.endsWith('index.html')) {
-        logUserInteraction('Visited');
-    } else if (window.location.pathname.endsWith('weather.html')) {
+    if (window.location.pathname.endsWith('weather.html')) {
         checkWeather(city);
         logUserInteraction('Accessed weather page');
     } else if (window.location.pathname.endsWith('news.html')) {
@@ -342,7 +340,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Function to get the page name without file extension
     function getPageName() {
         const path = window.location.pathname;
-        const page = path.split('/').pop().replace('.html', '').replace('index', 'Home').replace('weather', 'Weather').replace('news', 'News').replace('covid19', 'COVID-19').replace('logs', 'Logging');
+        const page = path.split('/').pop().replace('.html', '').replace('weather', 'Weather').replace('news', 'News').replace('covid19', 'COVID-19').replace('logs', 'Logging');
 
         return page.charAt(0).toUpperCase() + page.slice(1);
     }
